@@ -13,7 +13,9 @@ struct WeatherManager {
     
     func fetchWeather(cityName: String) {
         let openWeatherAPIKey = ProcessInfo.processInfo.environment["openWeatherAPIKey"]
-        let urlString = weatherURL + "&appid=\(openWeatherAPIKey!)&q=\(cityName)"
+        //in case the city name has 2 or more words
+        let newCityName = cityName.components(separatedBy: " ")
+        let urlString = weatherURL + "&appid=\(openWeatherAPIKey!)&q=\(newCityName.joined(separator: "%20"))"
         performRequest(urlString: urlString)
     }
     
@@ -42,11 +44,16 @@ struct WeatherManager {
         let decoder = JSONDecoder()
         do {
             let decodedData = try decoder.decode(WeatherData.self, from: weatherData)
-            print(decodedData.main.temp)
-            print(decodedData.weather[0].description)
+            let id = decodedData.weather[0].id
+            let cityName = decodedData.name
+            let temperature = decodedData.main.temp
+            
+            let weather = WeatherModel(cityName: cityName, conditionId: id, temperature: temperature)
+            
+            print(weather.conditionName)
+            print(weather.temperatureString)
         } catch {
             print(error)
         }
-        
     }
 }

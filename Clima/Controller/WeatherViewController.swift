@@ -46,6 +46,5 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
             weatherManager.fetchWeather(cityName: city)
         }
     }
-    
 }
 
