@@ -26,6 +26,13 @@ struct WeatherManager {
         performRequest(to: urlString)
     }
     
+    func fetchWeather(_ lat: Double, _ lon: Double) {
+        let openWeatherAPIKey = ProcessInfo.processInfo.environment["openWeatherAPIKey"]
+        
+        let urlString = weatherURL + "&appid=\(openWeatherAPIKey!)&lat=\(lat)&lon=\(lon)"
+        performRequest(to: urlString)
+    }
+    
     func performRequest(to urlString: String) {
         //1. Create a URL
         if let url = URL(string: urlString) {
